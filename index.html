@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atlantic City</title>
+    <link rel="stylesheet" href="/src/assets/styles.css">
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <!-- Vue 3 desde CDN -->
+    <script type="module">
+      import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+      // Header component
+      const Header = {
+        template: `
+          <header class="header">
+            <h1>Atlantic City</h1>
+          </header>
+        `,
+        style: `
+          .header {
+            background-color: #111;
+            color: #f2c94c;
+            text-align: center;
+            font-size: 24px;
+            padding: 10px 0;
+            font-family: 'Times New Roman', serif;
+          }
+        `
+      }
+
+      // Sidebar component
+      const Sidebar = {
+        template: `
+          <aside class="sidebar">
+            <button class="menu-btn active">Gestión de Usuario <span class="arrow">▼</span></button>
+            <button class="menu-btn">Gestión de promociones</button>
+
+            <div class="submenu">
+              <button class="submenu-btn">Promociones</button>
+              <button class="submenu-btn">Ofertas</button>
+            </div>
+
+            <div class="spacer"></div>
+
+            <button class="logout-btn">Cerrar Sesión</button>
+          </aside>
+        `
+      }
+
+      // App component
+      const App = {
+        components: { Header, Sidebar },
+        template: `
+          <div class="app-container">
+            <Header />
+            <div class="content">
+              <Sidebar />
+              <main class="main-content"></main>
+            </div>
+          </div>
+        `
+      }
+
+      // Styles
+      const styles = `
+        body {
+          margin: 0;
+          font-family: Arial, sans-serif;
+        }
+        .app-container {
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+        }
+        .header {
+          background-color: #111;
+          color: #f2c94c;
+          text-align: center;
+          font-size: 24px;
+          padding: 10px 0;
+          font-family: 'Times New Roman', serif;
+        }
+        .content {
+          display: flex;
+          flex: 1;
+          background-color: #5a5656;
+        }
+        .sidebar {
+          background-color: #d8ecff;
+          width: 220px;
+          display: flex;
+          flex-direction: column;
+          padding: 0;
+        }
+        .menu-btn {
+          background-color: #f2d447;
+          border: none;
+          padding: 12px;
+          cursor: pointer;
+          font-weight: 500;
+          font-size: 15px;
+          text-align: left;
+          transition: background 0.3s;
+        }
+        .menu-btn:hover {
+          background-color: #e5c93a;
+        }
+        .submenu {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          padding: 10px;
+        }
+        .submenu-btn {
+          background-color: #999;
+          color: white;
+          border: none;
+          padding: 8px;
+          text-align: left;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .submenu-btn:hover {
+          background-color: #888;
+        }
+        .logout-btn {
+          background-color: #f2d447;
+          border: none;
+          padding: 12px;
+          margin-top: auto;
+          cursor: pointer;
+          font-weight: 600;
+        }
+        .spacer {
+          flex: 1;
+        }
+        .main-content {
+          flex: 1;
+          background-color: #e4e2e1;
+          margin: 15px;
+        }
+      `
+      const styleSheet = document.createElement('style')
+      styleSheet.innerText = styles
+      document.head.appendChild(styleSheet)
+
+      // Crear app Vue
+      createApp(App).mount('#app')
+    </script>
+  </body>
+</html>
