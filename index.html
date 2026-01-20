@@ -100,7 +100,12 @@
             <div class="form-grid">
               <input v-model="newUser.name" placeholder="Nombre" />
               <input v-model="newUser.lastname" placeholder="Apellido" />
-              <input v-model="newUser.role" placeholder="Rol" />
+              <select v-model="newUser.role">
+                <option disabled value="">Selecciona rol</option>
+                <option>Administrador</option>
+                <option>Editor</option>
+                <option>Usuario</option>
+              </select>
               <select v-model="newUser.active">
                 <option :value="true">Activo</option>
                 <option :value="false">Suspendido</option>
