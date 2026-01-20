@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="atlanticApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlantic City Dashboard</title>
+
+  <!-- Vue 3 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/a2e0e6a64b.js" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body ng-controller="MainCtrl as ctrl">
+  <div id="app">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="logo">ATLANTIC CITY</div>
+      <div class="top-icons">
+        <i class="fa fa-cog" title="Configuración"></i>
+        <i class="fa fa-comment-dots" title="Chat"></i>
+        <i class="fa fa-bell" title="Notificaciones"></i>
+        <i class="fa fa-user-circle" title="Cuenta"></i>
+      </div>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <div class="container">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="menu-item" ng-click="ctrl.setView('dashboard')"><i class="fa fa-home"></i> Dashboard</div>
+        <div class="menu-item" ng-click="ctrl.setView('usuarios')"><i class="fa fa-users"></i> Usuarios</div>
+        <div class="menu-sub" ng-if="ctrl.view==='usuarios'">
+          <div class="submenu">Lista de usuarios</div>
+          <div class="submenu">Roles y permisos</div>
+          <div class="submenu">Actividad</div>
+        </div>
+        <div class="menu-item" ng-click="ctrl.setView('clientes')"><i class="fa fa-user-tag"></i> Clientes</div>
+        <div class="menu-item" ng-click="ctrl.setView('promociones')"><i class="fa fa-gift"></i> Promociones</div>
+        <div class="menu-item" ng-click="ctrl.setView('reportes')"><i class="fa fa-chart-bar"></i> Reportes</div>
+        <div class="menu-item"><i class="fa fa-comments"></i> Atención al cliente</div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main id="content" class="content">
+        <!-- DASHBOARD -->
+        <div v-if="currentView==='dashboard'">
+          <h2>Panel principal</h2>
+          <p>Bienvenido al sistema Atlantic City.</p>
+        </div>
+
+        <!-- USUARIOS -->
+        <div v-if="currentView==='usuarios'">
+          <h2>Lista de Usuarios</h2>
+          <div class="toolbar">
+            <input type="text" placeholder="Buscar usuario" class="search" v-model="searchUser">
+            <button class="btn blue" @click="showUserModal=true">Agregar usuario</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(user, i) in filteredUsers" :key="i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.role }}</td>
+                <td :class="{'active': user.active, 'suspended': !user.active}">
+                  {{ user.active ? 'Activo' : 'Suspendido' }}
+                </td>
+                <td>
+                  <button class="btn green">Ver</button>
+                  <button class="btn yellow">Editar</button>
+                  <button class="btn red" @click="deleteUser(i)">Borrar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- MODAL CREAR USUARIO -->
+        <div v-if="showUserModal" class="modal-overlay">
+          <div class="modal">
+            <h3>Agregar nuevo usuario</h3>
+            <div class="form-grid">
+              <input v-model="newUser.name" placeholder="Nombre" />
+              <input v-model="newUser.lastname" placeholder="Apellido" />
+              <input v-model="newUser.role" placeholder="Rol" />
+              <select v-model="newUser.active">
+                <option :value="true">Activo</option>
+                <option :value="false">Suspendido</option>
+              </select>
+            </div>
+            <div class="modal-actions">
+              <button class="btn gray" @click="showUserModal=false">Cancelar</button>
+              <button class="btn blue" @click="addUser">Guardar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLIENTES -->
+        <div v-if="currentView==='clientes'" class="clientes">
+          <h2>Clientes</h2>
+          <div class="toolbar">
+            <input type="text" placeholder="Buscar cliente" class="search" v-model="searchQuery">
+            <button class="btn blue" @click="showModal=true">Agregar</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(client, i) in filteredClients" :key="i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ client.name }}</td>
+                <td>{{ client.lastname }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.category }}</td>
+                <td>
+                  <button class="btn green">Ver</button>
+                  <button class="btn yellow">Editar</button>
+                  <button class="btn red" @click="deleteClient(i)">Borrar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- MODAL CREAR CLIENTE -->
+        <div v-if="showModal" class="modal-overlay">
+          <div class="modal">
+            <h3>Agregar nuevo cliente</h3>
+            <div class="form-grid">
+              <input v-model="newClient.name" placeholder="Nombre" />
+              <input v-model="newClient.lastname" placeholder="Apellido" />
+              <input v-model="newClient.email" placeholder="Email" />
+              <select v-model="newClient.category">
+                <option disabled value="">Selecciona categoría</option>
+                <option>Oro</option>
+                <option>Plata</option>
+                <option>Bronce</option>
+              </select>
+            </div>
+            <div class="modal-actions">
+              <button class="btn gray" @click="showModal=false">Cancelar</button>
+              <button class="btn blue" @click="addClient">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
