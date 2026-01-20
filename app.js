@@ -2,6 +2,21 @@
 angular.module('atlanticApp', [])
   .controller('MainCtrl', function() {
     this.view = 'dashboard';
+
+this.roles = {
+  administrator: false,
+  cashier: false,
+  receptionist: false
+};
+this.isActive = false;
+
+this.createUser = function() {
+  const selectedRoles = Object.keys(this.roles).filter(role => this.roles[role]);
+  const userStatus = this.isActive ? 'Activo' : 'Inactivo';
+  console.log('Roles seleccionados:', selectedRoles);
+  console.log('Estado del usuario:', userStatus);
+  // Aquí puedes agregar la lógica para crear el usuario
+};
     this.setView = function(view) {
       this.view = view;
       const vueApp = document.querySelector('#app').__vue_app__;
