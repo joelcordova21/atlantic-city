@@ -1,10 +1,5 @@
-/**
- * plugins/index.js
- *
- * Automatically included in `./src/main.js`
- */
+// Registro de Plugins utilizados en la aplicación Vue.js
 
-// Plugins
 import vuetify from './vuetify'
 import pinia from '@/stores'
 import router from '@/router'

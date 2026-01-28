@@ -1,11 +1,3 @@
-  <script setup>
-    //
-  </script>
-
-<template>
-  
-  <BarraMenu />
-</template>
-
+<script></script>
+<template></template>
 <style></style>
-

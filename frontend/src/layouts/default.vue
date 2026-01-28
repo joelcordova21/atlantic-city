@@ -1,3 +1,6 @@
+<script setup>
+  
+</script>
 <template>
   <v-app>
   
@@ -8,6 +11,9 @@
   </v-app>
 </template>
 
-<script setup>
-  import BarraMenu from '@/components/BarraMenu.vue'
-</script>
+<style>
+  .v-main {
+    background-color: #1D2939;
+  }
+</style>
+
